@@ -1,0 +1,1 @@
+Project is intended to provide page for handling Board Game events with possibility to rent a game, view event statistics. It should also handle game storage handling after the event.
