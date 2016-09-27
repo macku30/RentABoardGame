@@ -14,12 +14,41 @@ function closeDatabaseConnection($con){
 }
 
 function addGame($name, $owner, $identifier){
-    echo 'add game';
     $con = getDatabaseConnection();
     if ($con){
-        echo 'add game2';
-        $query = "INSERT INTO game (identifier, name, owner) VALUES (" . $identifier . ",". $name . "," . $owner .")";
+        $query = "INSERT INTO rentABook.game (identifier, name, owner) VALUES ('" . $identifier . "','". $name . "','" . $owner ."')";
         $result = mysqli_query($con, $query);
+        if($result == NULL){
+            printf("Invalid query: %s\nWhole query: %s\n", $con->error, $query);
+        }
+        closeDatabaseConnection($con);
+        return $result;
+    }
+    return false;
+}
+
+function addLender($identifier, $name){
+    $con = getDatabaseConnection();
+    if ($con){
+        $query = "INSERT INTO rentABook.lender (identifier, name) VALUES ('" . $identifier . "','". $name . "')";
+        $result = mysqli_query($con, $query);
+        if($result == NULL){
+            printf("Invalid query: %s\nWhole query: %s\n", $con->error, $query);
+        }
+        closeDatabaseConnection($con);
+        return $result;
+    }
+    return false;
+}
+
+function addEvent($name, $startDate, $endDate){
+    $con = getDatabaseConnection();
+    if ($con){
+        $query = "INSERT INTO rentABook.event (name) VALUES ('" . $identifier . "','". $name . "')";
+        $result = mysqli_query($con, $query);
+        if($result == NULL){
+            printf("Invalid query: %s\nWhole query: %s\n", $con->error, $query);
+        }
         closeDatabaseConnection($con);
         return $result;
     }
@@ -29,11 +58,27 @@ function addGame($name, $owner, $identifier){
 function addWarehaus($name){
     $con = getDatabaseConnection();
     if ($con){
-        $query = "INSERT INTO warehaus ( name) VALUES (". $name . ")";
-        $result = mysqli_query($link, $query);
+        $query = "INSERT INTO rentABook.warehaus ( name) VALUES ('". $name . "')";
+        $result = mysqli_query($con, $query);
         closeDatabaseConnection($con);
         return $result;
     }
     return false;
+}
+
+function getGames(){
+    $con = getDatabaseConnection();
+    if( $con){
+        $query = "SELECT * FROM rentABook.game LIMIT 0,1000";
+        $result = mysqli_query($con, $query);
+        
+        if($result){
+            while ($row = $result->fetch_object()){
+                echo $row->name . "</br>";
+            }
+            $result->close();
+        }
+        closeDatabaseConnection($con);
+    }
 }
  ?> 
