@@ -1,6 +1,5 @@
  <?php 
 
-
 function getDatabaseConnection(){
     include 'libraries\pass.php';
 
@@ -44,7 +43,22 @@ function addLender($identifier, $name){
 function addEvent($name, $startDate, $endDate){
     $con = getDatabaseConnection();
     if ($con){
-        $query = "INSERT INTO rentABook.event (name) VALUES ('" . $identifier . "','". $name . "')";
+        $query = "INSERT INTO rentABook.event (name, startDate, endDate) VALUES ('" . $name . "','". $startDate . "','". $endDate . "')";
+        $result = mysqli_query($con, $query);
+        if($result == NULL){
+            printf("Invalid query: %s\nWhole query: %s\n", $con->error, $query);
+        }
+        closeDatabaseConnection($con);
+        return $result;
+    }
+    return false;
+}
+
+function addHire($game_id, $lender_id, $event_id, $weight, $hire_start){
+    $con = getDatabaseConnection();
+    if ($con){
+        $query = "INSERT INTO rentABook.hire (Game_idGame, Lender_identifier, Event_idEvent, weight, hireEnd) VALUES ('" 
+                 . $game_id . "','". $lender_id . "','". $event_id . "','". $weight . "','". $hire_start . "')";
         $result = mysqli_query($con, $query);
         if($result == NULL){
             printf("Invalid query: %s\nWhole query: %s\n", $con->error, $query);
